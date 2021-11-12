@@ -25,11 +25,12 @@ Route.get('/', async () => {
 })
 
 Route.post('login', 'AuthController.login')
-Route.post('logout', 'AuthController.logout')
-Route.resource('users', 'UsersController').apiOnly()
 
 //Routas protegidas
 Route.group(() => {
+  Route.post('logged_user', 'AuthController.show')
+  Route.post('logout', 'AuthController.logout')
+  Route.resource('users', 'UsersController').apiOnly()
   // Route.resource('users', 'UsersController').apiOnly()
   Route.post('users/activate/:id', 'UsersController.activate')
 

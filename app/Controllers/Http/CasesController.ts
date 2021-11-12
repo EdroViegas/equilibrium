@@ -7,7 +7,11 @@ export default class CasesController {
   public async index({ response }: HttpContextContract) {
     try {
       const cases = await Case.query().preload('user').preload('contact').whereNull('isDeleted')
-      return response.send({ message: 'Lista de casos positivos', data: cases, code: Code.SUCCESS })
+      return response.send({
+        message: 'Lista de casos positivos',
+        cases: cases,
+        code: Code.SUCCESS,
+      })
     } catch (error) {
       return response
         .status(202)

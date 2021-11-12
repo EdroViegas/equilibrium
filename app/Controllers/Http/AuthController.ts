@@ -18,6 +18,24 @@ export default class AuthController {
     }
   }*/
 
+  public async show({ response, auth }: HttpContextContract) {
+    try {
+      const user = await User.find(auth.user?.id)
+
+      if (user) {
+        return response
+          .status(202)
+          .send({ message: 'Informações do usuário', user: user, code: Code.SUCCESS })
+      }
+
+      return response.status(404).send({ message: 'Usuário não encontrado', code: Code.NOT_FOUND })
+    } catch (error) {
+      return response
+        .status(200)
+        .send({ message: 'Ocorreu um erro ao obter usuário', code: error.code })
+    }
+  }
+
   public async login({ auth, response, request }: HttpContextContract) {
     const email = request.input('email')
     const password = request.input('password')
@@ -26,7 +44,7 @@ export default class AuthController {
       const user = await User.query().where('email', email).where('isActive', 1).firstOrFail()
 
       if (!(await Hash.verify(user.password, password))) {
-        return response.status(401).send({ message: 'Credenciais inválida', code: Code.ER_LOGIN })
+        return response.status(200).send({ message: 'Credenciais inválida', code: Code.ER_LOGIN })
       }
 
       const token = await auth.use('api').generate(user, {
@@ -38,7 +56,7 @@ export default class AuthController {
         .status(202)
         .send({ message: 'Login efectuado', token, user, code: Code.SUCCESS })
     } catch (error) {
-      return response.status(401).send({ message: 'Credenciais inválida', code: Code.ER_LOGIN })
+      return response.status(401).send({ message: 'Credenciais inválida', code: error.code })
     }
   }
 

@@ -59,7 +59,7 @@ export default class UsersController {
       if (user) {
         return response
           .status(202)
-          .send({ message: 'Informações do usuário', data: user, code: Code.SUCCESS })
+          .send({ message: 'Informações do usuário', user: user, code: Code.SUCCESS })
       }
 
       return response.status(404).send({ message: 'Usuário não encontrado', code: Code.NOT_FOUND })
