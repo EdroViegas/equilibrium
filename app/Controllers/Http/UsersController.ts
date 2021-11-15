@@ -17,8 +17,8 @@ export default class UsersController {
     }
   }
 
-  public async store({ auth, response, request }: HttpContextContract) {
-     console.log(auth.user.role)
+  public async store({  response, request }: HttpContextContract) {
+     
     //const loggedUser = auth.user
     const userData = request.all()
 
