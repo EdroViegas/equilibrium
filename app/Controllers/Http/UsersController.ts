@@ -1,6 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import validateEmail from 'App/helpers/helper_functions'
-import User from 'App/Models/user'
+import User from 'App/Models/User'
 import Code from 'Contracts/enums/code'
 
 export default class UsersController {
@@ -18,6 +18,7 @@ export default class UsersController {
   }
 
   public async store({ auth, response, request }: HttpContextContract) {
+     console.log(auth.user.role)
     //const loggedUser = auth.user
     const userData = request.all()
 
