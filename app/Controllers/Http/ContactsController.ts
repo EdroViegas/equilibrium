@@ -105,7 +105,7 @@ export default class ContactsController {
     } catch (error) {
       return response
         .status(200)
-        .send({ message: 'Ocorreu um erro ao bloquear contacto', code: error.codeS })
+        .send({ message: 'Ocorreu um erro ao eliminar contacto', code: error.codeS })
     }
   }
 }

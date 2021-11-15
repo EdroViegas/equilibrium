@@ -11,6 +11,10 @@ export default class Case extends BaseModel {
   @column()
   public address: string
   @column()
+  public age: number
+  @column()
+  public genre: string
+  @column()
   public email: string
   @column()
   public phone: string

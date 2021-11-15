@@ -25,6 +25,9 @@ export default class User extends BaseModel {
   @hasMany(() => Case)
   public posts: HasMany<typeof Case>
 
+  @column()
+  public isDeleted: number
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

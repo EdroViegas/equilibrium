@@ -31,8 +31,8 @@ Route.group(() => {
   Route.post('logged_user', 'AuthController.show')
   Route.post('logout', 'AuthController.logout')
   Route.resource('users', 'UsersController').apiOnly()
-  // Route.resource('users', 'UsersController').apiOnly()
-  Route.post('users/activate/:id', 'UsersController.activate')
+
+  Route.get('users/state/:id', 'UsersController.changeState')
 
   Route.resource('cases', 'CasesController').apiOnly()
   Route.post('cases/search/', 'CasesController.search')

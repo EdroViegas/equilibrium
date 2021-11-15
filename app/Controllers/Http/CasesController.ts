@@ -6,7 +6,11 @@ import Code from 'Contracts/enums/code'
 export default class CasesController {
   public async index({ response }: HttpContextContract) {
     try {
-      const cases = await Case.query().preload('user').preload('contact').whereNull('isDeleted')
+      const cases = await Case.query()
+        .preload('user')
+        .preload('contact')
+        .whereNull('isDeleted')
+        .orderBy('id', 'desc')
       return response.send({
         message: 'Lista de casos positivos',
         cases: cases,
@@ -32,8 +36,9 @@ export default class CasesController {
 
       return response
         .status(202)
-        .send({ message: 'Caso adicionado', data: addedCase, code: Code.SUCCESS })
+        .send({ message: 'Caso adicionado', case: addedCase, code: Code.SUCCESS })
     } catch (error) {
+      console.log(error)
       return response
         .status(200)
         .send({ message: 'Ocorreu um erro ao adicionar caso', code: error.code })
@@ -49,7 +54,7 @@ export default class CasesController {
         await caseData.load('user')
         return response
           .status(202)
-          .send({ message: 'Informações do caso', case: caseData, code: Code.SUCCESS })
+          .send({ message: 'Informações do caso', caso: caseData, code: Code.SUCCESS })
       }
 
       return response.status(200).send({ message: 'Caso não encontrado', code: Code.NOT_FOUND })

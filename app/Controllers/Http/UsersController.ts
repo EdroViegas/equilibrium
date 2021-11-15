@@ -6,10 +6,10 @@ import Code from 'Contracts/enums/code'
 export default class UsersController {
   public async index({ response }: HttpContextContract) {
     try {
-      const users = await User.query().where('isActive', 1)
+      const users = await User.query().whereNull('is_deleted').orderBy('id', 'desc')
       return response
         .status(202)
-        .send({ message: 'Lista de usuários', data: users, code: Code.SUCCESS })
+        .send({ message: 'Lista de usuários', users: users, code: Code.SUCCESS })
     } catch (error) {
       return response
         .status(200)
@@ -21,12 +21,15 @@ export default class UsersController {
     const loggeUser = auth.user
     const userData = request.all()
 
-    if (loggeUser.role !== 'admin') {
+    //Only admin can register user
+    /*
+    if (loggeUser.role !== 'administrador') {
       return response
         .status(200)
         .send({ message: 'Não tem permissão para realizar a operação', code: Code.ER_EMAIL_FORMAT })
+    
     }
-
+  */
     if (!validateEmail(userData.email))
       return response
         .status(200)
@@ -98,45 +101,38 @@ export default class UsersController {
     try {
       const user = await User.find(params.id)
 
-      const isActive = 0
+      await user?.delete()
+      return response.status(200).send({ message: 'Usuário  eliminado', code: Code.SUCCESS })
+    } catch (error) {
+      return response
+        .status(200)
+        .send({ message: 'Ocorreu um erro ao eliminar o usuário', code: error.code })
+    }
+  }
+
+  public async changeState({ response, params }: HttpContextContract) {
+    try {
+      const user = await User.find(params.id)
+
+      const isActive = user?.isActive === 1 ? 0 : 1
+      const state = isActive === 0 ? 'desativado' : 'activado'
 
       if (user) {
         user.merge({ isActive: isActive })
         user.save()
-        return response.status(202).send({ message: 'Usuário desativado', code: Code.SUCCESS })
+        return response
+          .status(202)
+          .send({ message: `O usuário foi ${state}`, user: user, code: Code.SUCCESS })
       } else {
         return response.status(200).send({
-          message: 'Não foi possível desativar o usuário',
-          code: Code.ER_COULD_NOT_DEACTIVATE,
+          message: `Não foi possível  ${state} o usuário`,
+          code: Code.ER_COULD_NOT_CHANGE_STATE,
         })
       }
     } catch (error) {
       return response
         .status(200)
         .send({ message: 'Ocorreu um erro ao desativar usuário', code: error.code })
-    }
-  }
-
-  public async activate({ response, params }: HttpContextContract) {
-    try {
-      const user = await User.find(params.id)
-
-      const isActive = 1
-
-      if (user) {
-        user.merge({ isActive: isActive })
-        user.save()
-        return response.status(202).send({ message: 'Usuário activado', code: Code.SUCCESS })
-      } else {
-        return response.status(200).send({
-          message: 'Não foi possível activar o usuário',
-          code: Code.ER_COULD_NOT_ACTIVATE,
-        })
-      }
-    } catch (error) {
-      return response
-        .status(200)
-        .send({ message: 'Ocorreu um erro ao activar usuário', code: error.code })
     }
   }
 }

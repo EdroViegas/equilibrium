@@ -9,6 +9,8 @@ export default class Contacts extends BaseSchema {
       table.string('name')
       table.string('email')
       table.string('phone', 13)
+      table.integer('age')
+      table.string('genre')
       table.integer('tested').defaultTo(0)
       table.integer('case_id').unsigned().references('cases.id').onDelete('CASCADE')
 

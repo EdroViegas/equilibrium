@@ -11,6 +11,7 @@ export default class UsersSchema extends BaseSchema {
       table.string('password', 180).notNullable()
       table.string('role', 50).notNullable()
       table.integer('is_active').defaultTo(1)
+      table.integer('is_deleted')
       table.string('remember_me_token').nullable()
 
       /**

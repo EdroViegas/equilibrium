@@ -10,6 +10,10 @@ export default class Contact extends BaseModel {
   @column()
   public email: string
   @column()
+  public age: number
+  @column()
+  public genre: string
+  @column()
   public phone: string
   @column()
   public tested: number

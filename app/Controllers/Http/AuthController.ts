@@ -41,14 +41,26 @@ export default class AuthController {
     const password = request.input('password')
 
     try {
-      const user = await User.query().where('email', email).where('isActive', 1).firstOrFail()
+      const user = await User.query()
+        .where('email', email)
+        .where('isActive', 1)
+        .whereNull('isDeleted')
+        .first()
+
+      if (!user) {
+        return response
+          .status(200)
+          .send({ message: 'E-mail ou senha incorrecta!', code: Code.ER_LOGIN })
+      }
 
       if (!(await Hash.verify(user.password, password))) {
-        return response.status(200).send({ message: 'Credenciais inválida', code: Code.ER_LOGIN })
+        return response
+          .status(200)
+          .send({ message: 'E-mail ou senha incorrecta!', code: Code.ER_LOGIN })
       }
 
       const token = await auth.use('api').generate(user, {
-        expiresIn: '1days',
+        expiresIn: '10days',
         name: user.email,
       })
 
@@ -56,7 +68,10 @@ export default class AuthController {
         .status(202)
         .send({ message: 'Login efectuado', token, user, code: Code.SUCCESS })
     } catch (error) {
-      return response.status(401).send({ message: 'Credenciais inválida', code: error.code })
+      console.log(error)
+      return response
+        .status(200)
+        .send({ message: 'Ops! Ocorreu um erro ao efectuar o login', code: error.code })
     }
   }
 

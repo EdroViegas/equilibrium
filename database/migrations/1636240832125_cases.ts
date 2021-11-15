@@ -15,6 +15,8 @@ export default class Cases extends BaseSchema {
       table.integer('is_active').defaultTo(1)
       table.integer('is_deleted')
       table.dateTime('test_date')
+      table.integer('age')
+      table.string('genre')
       table.integer('user_id').unsigned().references('users.id').onDelete('CASCADE')
 
       /**
