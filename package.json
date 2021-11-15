@@ -1,6 +1,9 @@
 {
   "name": "equilibrium",
   "version": "1.0.0",
+   "engines": {
+    "node": "17.1.0"
+  },
   "private": true,
   "scripts": {
     "dev": "node ace serve --watch",
