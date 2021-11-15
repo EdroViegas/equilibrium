@@ -18,12 +18,12 @@ export default class UsersController {
   }
 
   public async store({ auth, response, request }: HttpContextContract) {
-    const loggeUser = auth.user
+    //const loggedUser = auth.user
     const userData = request.all()
 
     //Only admin can register user
     /*
-    if (loggeUser.role !== 'administrador') {
+    if (loggedUser.role !== 'administrador') {
       return response
         .status(200)
         .send({ message: 'Não tem permissão para realizar a operação', code: Code.ER_EMAIL_FORMAT })
