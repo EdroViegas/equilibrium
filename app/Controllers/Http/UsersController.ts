@@ -1,5 +1,5 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import validateEmail from 'App/helpers/helper_functions'
+//import validateEmail from 'App/helpers/helper_functions'
 import User from 'App/Models/User'
 import Code from 'Contracts/enums/code'
 
@@ -31,10 +31,11 @@ export default class UsersController {
     
     }
   */
+    /*
     if (!validateEmail(userData.email))
       return response
         .status(200)
-        .send({ message: 'E-mail no formato errado', code: Code.ER_EMAIL_FORMAT })
+        .send({ message: 'E-mail no formato errado', code: Code.ER_EMAIL_FORMAT })*/
 
     try {
       const emailExists = await User.findBy('email', userData.email)
