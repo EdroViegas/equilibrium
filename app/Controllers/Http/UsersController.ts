@@ -17,8 +17,7 @@ export default class UsersController {
     }
   }
 
-  public async store({  response, request }: HttpContextContract) {
-     
+  public async store({ response, request }: HttpContextContract) {
     //const loggedUser = auth.user
     const userData = request.all()
 
@@ -103,8 +102,16 @@ export default class UsersController {
     try {
       const user = await User.find(params.id)
 
-      await user?.delete()
-      return response.status(200).send({ message: 'Usuário  eliminado', code: Code.SUCCESS })
+      if (user) {
+        user.merge({ isDeleted: 1 })
+        user.save()
+        return response.status(202).send({ message: 'Usuário eliminado', code: Code.SUCCESS })
+      } else {
+        return response.status(200).send({
+          message: `Não foi possível  eliminar  o usuário`,
+          code: Code.ER_COULD_NOT_CHANGE_STATE,
+        })
+      }
     } catch (error) {
       return response
         .status(200)
