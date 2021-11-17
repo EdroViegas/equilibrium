@@ -83,7 +83,7 @@ export default class AuthController {
         return response.status(202).send({ message: 'Logout efectuado', code: Code.SUCCESS })
       } else {
         return response
-          .status(202)
+          .status(200)
           .send({ message: 'Não foi possível efectuar Logout', code: Code.ER_LOGOUT })
       }
     } catch (error) {

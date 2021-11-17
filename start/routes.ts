@@ -24,7 +24,6 @@ Route.get('/', async () => {
   return { Message: 'Equilibrium test API' }
 })
 
-
 Route.post('insert_user', 'UsersController.store')
 
 Route.post('login', 'AuthController.login')

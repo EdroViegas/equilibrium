@@ -112,11 +112,14 @@ export default class CasesController {
     const search = '%' + keyword + '%'
 
     try {
-      const caseData = await Case.query().where('name', 'LIKE', search)
+      const caseData = await Case.query()
+        .where('name', 'LIKE', search)
+        .whereNull('isDeleted')
+        .orderBy('id', 'desc')
 
       return response
         .status(202)
-        .send({ message: 'Lista de casos encontrados', case: caseData, code: Code.SUCCESS })
+        .send({ message: 'Lista de casos encontrados', cases: caseData, code: Code.SUCCESS })
     } catch (error) {
       return response.status(200).send({
         message: 'Ocorreu um erro ao obter  caso',
