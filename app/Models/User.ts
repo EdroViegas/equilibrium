@@ -18,6 +18,8 @@ export default class User extends BaseModel {
   @column()
   public role: string
   @column()
+  public genre: string
+  @column()
   public isActive: number
 
   @column()

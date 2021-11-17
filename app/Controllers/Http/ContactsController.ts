@@ -45,7 +45,7 @@ export default class ContactsController {
 
         return response
           .status(202)
-          .send({ message: 'Contacto adicionado', data: contact, code: Code.SUCCESS })
+          .send({ message: 'Contacto adicionado', contact: contact, code: Code.SUCCESS })
       }
     } catch (error) {
       return response
