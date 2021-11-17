@@ -36,7 +36,7 @@ export default class CasesController {
 
       return response
         .status(202)
-        .send({ message: 'Caso adicionado', case: addedCase, code: Code.SUCCESS })
+        .send({ message: 'Caso adicionado', caso: addedCase, code: Code.SUCCESS })
     } catch (error) {
       console.log(error)
       return response
