@@ -112,7 +112,9 @@ export default class CasesController {
     const search = '%' + keyword + '%'
 
     try {
+      //Also return contact
       const caseData = await Case.query()
+        .preload('contact')
         .where('name', 'LIKE', search)
         .whereNull('isDeleted')
         .orderBy('id', 'desc')
